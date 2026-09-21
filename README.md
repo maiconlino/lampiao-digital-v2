@@ -26,19 +26,19 @@ Na fase da pipa, salte e segure J para planar. Com o mouse, clique no cenário p
 O projeto usa HTML, CSS, JavaScript, Canvas e Web Audio, sem dependências de instalação ou etapa de compilação. Com Python 3 instalado, execute na pasta do repositório:
 
 ```sh
-python3 -m http.server 4173 --directory dist
+python3 -m http.server 4173 --directory public
 ```
 
 Abra http://localhost:4173 no navegador. Inicie o jogo para liberar a reprodução de áudio. Sirva a pasta por HTTP; abrir o HTML diretamente pelo sistema de arquivos pode impedir o carregamento de recursos.
 
 ## Organização
 
-- `dist/index.html` e `dist/style.css`: página e apresentação.
-- `dist/game.js`: menus, controles e progresso.
-- `dist/engine.js`: física e desenho do jogo.
-- `dist/world.js`: capítulos, cenários e falas.
-- `dist/audio.js`: música e reprodução das vozes.
-- `dist/assets/`: imagens, trilhas MIDI, partituras de reprodução e falas gravadas.
+- `public/index.html` e `public/style.css`: página e apresentação.
+- `public/game.js`: menus, controles e progresso.
+- `public/engine.js`: física e desenho do jogo.
+- `public/world.js`: capítulos, cenários e falas.
+- `public/audio.js`: música e reprodução das vozes.
+- `public/assets/`: imagens, trilhas MIDI, partituras de reprodução e falas gravadas.
 - `.openai/hosting.json`: configuração da hospedagem atual.
 
 ## Música e vozes
@@ -46,3 +46,11 @@ Abra http://localhost:4173 no navegador. Inicie o jogo para liberar a reproduç�
 As trilhas originais exploram forró, xote, baião, maracatu e coco, com arquivos MIDI e síntese no navegador. As 29 falas em português brasileiro foram geradas localmente com [Kokoro](https://huggingface.co/hexgrad/Kokoro-82M), usando [kokoro-onnx](https://github.com/thewh1teagle/kokoro-onnx), e estão incluídas como áudio. Jogar não exige API de voz, assinatura ou serviço pago. As vozes são sintéticas e ainda não têm sotaque nordestino específico.
 
 Este projeto é uma criação nova inspirada na proposta de ensinar sobre o sertão por meio de jogos, sem reutilizar código, arte ou áudio do Lampião Digital original.
+
+## Contador de visitas
+
+O jogo envia identificadores aleatórios de navegador e sessão para um contador persistente em D1. Não solicita nome ou e-mail e não armazena IP. Visitas anteriores à instalação não são recuperadas. Os totais representam sessões e navegadores estimados, não pessoas identificadas.
+
+O painel `/painel` exige um link com chave secreta, validada no servidor. O código público não contém essa chave. Configure apenas seu hash SHA-256 como `ANALYTICS_ADMIN_HASH` no ambiente da hospedagem. Não publique o link privado.
+
+Para compilar a versão com contador: `npm ci` e `npm run build`. A saída fica em `dist/client` e `dist/server`. O servidor estático de Python executa apenas o jogo; o contador e o painel precisam do Worker e do banco D1. Migrações em `drizzle/`.

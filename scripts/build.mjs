@@ -1,0 +1,13 @@
+import {mkdir,rm,cp,readFile,writeFile} from 'node:fs/promises';
+await rm('dist',{recursive:true,force:true});
+await mkdir('dist/server',{recursive:true});
+await mkdir('dist/.openai',{recursive:true});
+await cp('public','dist/client',{recursive:true});
+await rm('dist/client/.openai',{recursive:true,force:true});
+const worker=await readFile('server/worker.js','utf8');
+const dashboard=await readFile('server/dashboard.html','utf8');
+const home=await readFile('public/index.html','utf8');
+await writeFile('dist/server/index.js',`const DASHBOARD=${JSON.stringify(dashboard)};\nconst HOME=${JSON.stringify(home)};\n${worker}`);
+await cp('.openai/hosting.json','dist/.openai/hosting.json');
+await cp('drizzle','dist/.openai/drizzle',{recursive:true});
+console.log('Game, dashboard, Worker and database migrations built.');

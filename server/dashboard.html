@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer"><title>Visitas — Lampião Digital</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,sans-serif;color:#f6edda;background:#142e2a}*{box-sizing:border-box}body{margin:0}main{max-width:1080px;margin:auto;padding:48px 24px}header{display:flex;align-items:center;justify-content:space-between;gap:20px;border-bottom:1px solid #44615b;padding-bottom:28px}.eyebrow{color:#edbf60;text-transform:uppercase;letter-spacing:.12em;font-size:14px;font-weight:700}h1{font-family:Georgia,serif;font-size:clamp(28px,5vw,44px);margin:8px 0}p{font-size:16px;line-height:1.6;color:#c4d1ca}button{font:inherit;cursor:pointer;border:0;border-radius:8px;background:#edbf60;color:#172c28;font-weight:700;padding:13px 20px}button:disabled{opacity:.55;cursor:wait}button:focus-visible{outline:3px solid white;outline-offset:4px}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:28px 0}.card{padding:23px 20px;background:#203e36;border:1px solid #44615b;border-radius:12px}.card span{display:block;font-size:14px;color:#c4d1ca}.card strong{display:block;font-size:40px;color:#edbf60;margin:12px 0 4px}.panel{padding:24px;background:#203e36;border:1px solid #44615b;border-radius:12px}h2{margin:0;font-family:Georgia,serif;font-size:24px}.chart{height:190px;display:flex;align-items:end;gap:5px;margin:28px 0 12px;border-bottom:1px solid #71877d}.bar{flex:1;min-width:2px;background:#e8b65a;border-radius:4px 4px 0 0}.bar:focus{outline:2px solid white}.axis{display:flex;justify-content:space-between;font-size:14px;color:#c4d1ca}.note{font-size:14px}table{border-collapse:collapse;width:100%;margin-top:20px}th,td{padding:13px 6px;text-align:right;border-bottom:1px solid #44615b;font-size:14px}th:first-child,td:first-child{text-align:left}summary{cursor:pointer;font-size:16px;padding-top:24px}#status{min-height:26px}#status.error{color:#ffbfab}[hidden]{display:none!important}a{color:#edbf60}footer{margin-top:24px}@media(max-width:700px){main{padding:24px 16px}.cards{grid-template-columns:repeat(2,1fr);gap:10px}.card{padding:18px 12px}.card strong{font-size:32px}header{align-items:start;flex-direction:column}.panel{padding:18px}.chart{gap:3px}}@media(prefers-reduced-motion:no-preference){.bar{transition:height .3s}}
+</style></head><body><main><header><div><span class="eyebrow">Lampião Digital v2.0 · painel reservado</span><h1>Quem chegou à aventura</h1><p style="margin:0">Acompanhe os acessos ao jogo.</p></div><button id="refresh" type="button">Atualizar</button></header>
+<p id="status" role="status" aria-live="polite">Carregando visitas…</p>
+<section id="data" hidden>
+<div class="cards"><div class="card"><span>Visitas totais</span><strong id="visits">—</strong><span>Sessões no jogo</span></div><div class="card"><span>Visitantes estimados</span><strong id="visitors">—</strong><span>Navegadores diferentes</span></div><div class="card"><span>Visitas hoje</span><strong id="today-visits">—</strong><span>Horário de Recife</span></div><div class="card"><span>Visitantes hoje</span><strong id="today-visitors">—</strong><span>Navegadores diferentes</span></div></div>
+<section class="panel"><h2>Visitas nos últimos 30 dias</h2><p id="empty" hidden>Ainda não houve visitas registradas. A contagem começa com a primeira abertura do jogo após esta atualização.</p><div id="chart" class="chart" role="img" aria-label="Visitas diárias nos últimos 30 dias. Valores disponíveis na tabela abaixo."></div><div class="axis"><span id="first-day"></span><span>Hoje</span></div><details><summary>Ver números por dia</summary><table><thead><tr><th scope="col">Dia</th><th scope="col">Visitas</th><th scope="col">Visitantes</th></tr></thead><tbody id="rows"></tbody></table></details></section>
+<footer><p id="since" class="note"></p><p class="note">Uma visita é uma sessão de navegação. Recarregar a página não soma outra visita; uma nova sessão começa após 30 minutos sem atividade. Visitantes são estimados por navegador: trocar de aparelho ou apagar os dados do navegador pode contar novamente. Pessoas que compartilham um aparelho podem aparecer como um único visitante.</p><p class="note">Sem formulário, nomes ou e-mails. O contador não armazena endereços IP. Acessos anteriores à instalação não estão incluídos. Este painel não conta como visita ao jogo.</p><p class="note">Guarde seu link exclusivo: quem tiver esse link poderá consultar o painel.</p></footer>
+</section></main>
+<script>
+const $=id=>document.getElementById(id),format=new Intl.NumberFormat('pt-BR');
+let token=new URLSearchParams(location.hash.slice(1)).get('chave');
+if(token){try{sessionStorage.setItem('lampiao-panel-token',token)}catch{}history.replaceState(null,'',location.pathname)}
+else{try{token=sessionStorage.getItem('lampiao-panel-token')}catch{}}
+const shortDate=day=>new Date(day+'T12:00:00Z').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',timeZone:'America/Recife'});
+async function update(){
+  if(!token){$('status').textContent='Acesso reservado. Abra o link exclusivo enviado a você.';$('refresh').hidden=true;return}
+  $('refresh').disabled=true;$('status').className='';$('status').textContent='Atualizando…';
+  try{
+    const r=await fetch('/api/stats',{headers:{Authorization:'Bearer '+token},cache:'no-store'});
+    if(!r.ok)throw new Error(r.status===401?'Link inválido. Abra o link exclusivo enviado a você.':'Não foi possível atualizar. Tente novamente.');
+    const s=await r.json();$('data').hidden=false;
+    for(const [id,n] of [['visits',s.total.visits],['visitors',s.total.visitors],['today-visits',s.today.visits],['today-visitors',s.today.visitors]])$(id).textContent=format.format(n);
+    const days=[];for(let i=29;i>=0;i--){const d=new Date(s.todayDate+'T12:00:00Z');d.setUTCDate(d.getUTCDate()-i);const day=d.toISOString().slice(0,10);days.push(s.days.find(x=>x.day===day)||{day,visits:0,visitors:0})}
+    const max=Math.max(1,...days.map(d=>d.visits));$('chart').replaceChildren();$('rows').replaceChildren();
+    for(const d of days){const b=document.createElement('div');b.className='bar';b.style.height=(d.visits?Math.max(3,d.visits/max*100):0)+'%';b.title=shortDate(d.day)+': '+d.visits+' visitas';$('chart').append(b)}
+    for(const d of [...days].reverse()){const tr=document.createElement('tr');for(const v of [shortDate(d.day),format.format(d.visits),format.format(d.visitors)]){const td=document.createElement('td');td.textContent=v;tr.append(td)}$('rows').append(tr)}
+    $('first-day').textContent=shortDate(days[0].day);$('empty').hidden=s.total.visits!==0;
+    $('since').textContent=s.total.since?'Primeira visita registrada: '+new Date(s.total.since).toLocaleString('pt-BR',{timeZone:'America/Recife'})+'.':'Aguardando a primeira visita.';
+    $('status').textContent='Atualizado às '+new Date(s.updatedAt).toLocaleTimeString('pt-BR',{timeZone:'America/Recife'})+' · atualização automática a cada minuto';
+  }catch(e){$('status').className='error';$('status').textContent=e.message;$('data').hidden=true}
+  finally{$('refresh').disabled=false}
+}
+$('refresh').onclick=update;update();setInterval(()=>{if(document.visibilityState==='visible')update()},60000);
+</script></body></html>
