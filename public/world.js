@@ -51,6 +51,8 @@ export function makeLevel(index){
  const drafts=index===2?[{x:760,w:500},{x:2420,w:530},{x:4050,w:560}]:[];
  const posts=[{x:180,y:535},{x:1580,y:535},{x:3160,y:535},{x:4780,y:535}];
  const prefixes=['bila','piao','pipa','carrapeta','carrinho'];
- const encounters=[{x:60,id:index===0?'welcome':prefixes[index]+'0'},...Array.from({length:4},(_,i)=>({x:650+i*1370,id:prefixes[index]+(i+1)}))];
+ // Cultural narration belongs to collected pages, never to nearby coordinates.
+ items.filter(item=>item.kind==='page').slice(0,4).forEach((item,i)=>{item.lineId=prefixes[index]+(i+1)});
+ const encounters=[{x:60,id:index===0?'welcome':prefixes[index]+'0'}];
  return{width,ground,floors,platforms,stations,items,hazards,gusts,drafts,posts,encounters,index,exit:5860};
 }

@@ -21,7 +21,7 @@ export class PlatformGame {
  this.projectiles=this.projectiles.filter(b=>b.life>0);
  if(this.index===2)for(const s of L.stations){if(!s.done&&gliding&&Math.hypot(p.x+16-s.x,p.y+20-s.y)<88)this.completeTarget(s)}
  if(this.index===4)for(const s of L.stations){if(!s.done&&Math.abs(p.x-s.x)<55&&p.y>400)this.completeTarget(s)}
- for(const item of L.items){if(!item.taken&&Math.hypot(item.x-(p.x+16),item.y-(p.y+32))<42){item.taken=true;this.sound.effect('collect');this.burst(item.x,item.y,10,item.kind==='page'?'#f4e3b1':'#efc66f');if(item.kind==='page'){this.levelPages++;this.float('+ uma página',item.x,item.y);this.cb.page?.(this.index,this.levelPages)}else{this.seeds++;this.seedTotal++;this.float('+1',item.x,item.y)}this.cb.hud?.(this.state())}}
+ for(const item of L.items){if(!item.taken&&Math.hypot(item.x-(p.x+16),item.y-(p.y+32))<42){item.taken=true;this.sound.effect('collect');this.burst(item.x,item.y,10,item.kind==='page'?'#f4e3b1':'#efc66f');if(item.kind==='page'){if(item.lineId)this.say(item.lineId);this.levelPages++;this.float('+ uma página',item.x,item.y);this.cb.page?.(this.index,this.levelPages)}else{this.seeds++;this.seedTotal++;this.float('+1',item.x,item.y)}this.cb.hud?.(this.state())}}
  for(const h of L.hazards){if(overlap(p,h)&&p.invuln===0){this.bump();p.vx=-p.dir*180;p.vy=-340}}
  for(const gust of L.gusts){if(overlap(p,gust)&&this.index!==2){p.x-=dt*(this.assist?28:80);if(this.time%1<dt)this.burst(p.x,p.y+30,2,'#f6e8c6')}}
  if(p.y>720)this.respawn();
