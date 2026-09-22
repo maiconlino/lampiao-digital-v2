@@ -14,3 +14,15 @@
 @media(max-width:700px){.caption-slot{min-height:6.5rem;padding:0 4%}.caption-slot .subtitle{font-size:.875rem;line-height:1.4}.game-wrap{height:calc(100svh - 315px);min-height:240px;max-height:580px}}
 @media(max-height:550px) and (orientation:landscape){.game-wrap{height:calc(100dvh - 245px);min-height:180px}.caption-slot{min-height:4.2rem}.caption-slot .subtitle{font-size:.875rem;line-height:1.3}.touch-controls{position:relative;bottom:auto;pointer-events:auto;background:#1e342e;padding:6px 3%}.touch-controls button{height:48px}.touch-controls .move-controls,.touch-controls .action-controls{pointer-events:auto}}
 .large-text .caption-slot .subtitle{font-size:1.08rem}
+
+.cordel-reveal{max-width:800px;background:#f4e4bb;border:3px solid #c59640;box-shadow:0 0 0 6px #e8be6940,0 25px 100px #081c22b0}
+.cordel-reveal::backdrop{background:#152e2bed}
+.cordel-discovery{display:grid;grid-template-columns:minmax(130px,230px) 1fr;align-items:center;gap:28px;margin:15px 0}
+.cordel-art{margin:0;text-align:center}.cordel-art img{display:block;width:100%;max-width:230px;height:auto;margin:auto;box-shadow:6px 7px 0 #8d683e33;border:1px solid #7a5237;transform:rotate(-2deg)}
+.cordel-art figcaption{font-size:.875rem;line-height:1.35;margin-top:14px;font-weight:700}.cordel-art figcaption span{font-weight:400}
+.cordel-verses blockquote{font-family:Georgia,serif;font-size:clamp(1.1rem,2.5vw,1.5rem);line-height:1.75;margin:14px 0;color:#693a23}.cordel-verses p{font-size:.95rem}
+.cordel-reveal .cordel-credit{font-size:.8rem;line-height:1.5;color:#5f523c}.cordel-credit a{color:#7d361e}.cordel-continue{display:block;margin:16px auto 0}
+.journal-entries .cordel-art{max-width:190px;margin:18px auto}
+@keyframes cordel-unfold{from{opacity:0;transform:perspective(600px) rotateY(-24deg) translateY(22px) scale(.85)}to{opacity:1;transform:perspective(600px) rotateY(0) translateY(0) scale(1)}}
+@media(prefers-reduced-motion:no-preference){.cordel-reveal[open]{animation:cordel-unfold .65s cubic-bezier(.2,.8,.2,1)}.cordel-reveal .cordel-art{animation:cordel-unfold .9s cubic-bezier(.2,.8,.2,1)}}
+@media(max-width:540px){.cordel-reveal{padding:18px;max-height:92dvh}.cordel-discovery{grid-template-columns:115px 1fr;gap:15px}.cordel-art figcaption{font-size:.75rem}.cordel-verses .kicker{font-size:.7rem;letter-spacing:1px}.cordel-verses blockquote{font-size:1rem;line-height:1.6}.cordel-verses p{display:none}.cordel-reveal h2{font-size:1.3rem}.cordel-reveal .cordel-credit{font-size:.75rem}}

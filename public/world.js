@@ -32,6 +32,11 @@ export const lines=[
  {id:'carrinho2',who:'Dandara',text:'São João, São Pedro, bandeirinhas e cantorias! Para muitas famílias, as festas também se ligam à fé católica popular e às novenas.'},
  {id:'carrinho3',who:'Celina',text:'As pessoas vivem suas crenças de formas diferentes. Podemos conhecer as tradições e respeitar quem pensa de outro jeito.'},
  {id:'carrinho4',who:'Lia',text:'O Nordeste tem escolas, universidades, pesquisa, arte e invenção. Nosso caderno está cheio de histórias, mas ainda há muito para descobrir!'},
+ {id:'bila5',duration:11.16,who:'Celina',text:'A força do povo nordestino também está em aprender, criar e cuidar uns dos outros. Nas escolas, nas feiras e nas comunidades, muita gente constrói novos caminhos.'},
+ {id:'piao5',duration:10.11,who:'Dandara',text:'Mãos habilidosas transformam ideias em brinquedos, arte e trabalho. A criatividade e a perseverança do povo nordestino passam de geração em geração.'},
+ {id:'pipa5',duration:10.36,who:'Celina',text:'Conhecer a natureza, compartilhar saberes e cuidar da água também é força. No Nordeste, comunidades e pesquisadores criam soluções e cuidam da vida.'},
+ {id:'carrapeta5',duration:9.57,who:'Lia',text:'Nossa força tem palavra, tem estudo e criação. Tem ciência, tem cantiga, tem abraço e união. Cada voz do nosso povo vai contando esse sertão!'},
+ {id:'carrinho5',duration:11.31,who:'Celina',text:'Chegamos com um caderno cheio de descobertas! A força nordestina está na coragem, no conhecimento, na solidariedade e na arte. É um povo que cria, ensina e transforma.'},
  {id:'finish',who:'Celina',text:'Conseguimos, turma! Levamos à feira um caderno cheio de saberes. O Nordeste é feito de muitas paisagens, muitas vozes e muita criação!'},
  {id:'checkpoint',who:'Téo',text:'Um lugar para descansar! Se eu escorregar, volto para cá.'},
  {id:'retry',who:'Téo',text:'Opa! Vou recuperar o fôlego e tentar de novo.'}
@@ -52,7 +57,7 @@ export function makeLevel(index){
  const posts=[{x:180,y:535},{x:1580,y:535},{x:3160,y:535},{x:4780,y:535}];
  const prefixes=['bila','piao','pipa','carrapeta','carrinho'];
  // Cultural narration belongs to collected pages, never to nearby coordinates.
- items.filter(item=>item.kind==='page').slice(0,4).forEach((item,i)=>{item.lineId=prefixes[index]+(i+1)});
+ items.filter(item=>item.kind==='page').forEach((item,i)=>{item.lineId=prefixes[index]+(i+1);if(item.lineId==='carrapeta2')item.special='cordel'});
  const encounters=[{x:60,id:index===0?'welcome':prefixes[index]+'0'}];
  return{width,ground,floors,platforms,stations,items,hazards,gusts,drafts,posts,encounters,index,exit:5860};
 }

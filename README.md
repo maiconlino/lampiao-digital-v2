@@ -43,7 +43,7 @@ Abra http://localhost:4173 no navegador. Inicie o jogo para liberar a reproduç�
 
 ## Música e vozes
 
-As trilhas originais exploram forró, xote, baião, maracatu e coco, com arquivos MIDI e síntese no navegador. As 29 falas em português brasileiro foram geradas localmente com [Kokoro](https://huggingface.co/hexgrad/Kokoro-82M), usando [kokoro-onnx](https://github.com/thewh1teagle/kokoro-onnx), e estão incluídas como áudio. Jogar não exige API de voz, assinatura ou serviço pago. As vozes são sintéticas e ainda não têm sotaque nordestino específico.
+As trilhas originais exploram forró, xote, baião, maracatu e coco, com arquivos MIDI e síntese no navegador. As 34 falas em português brasileiro foram geradas localmente com [Kokoro](https://huggingface.co/hexgrad/Kokoro-82M), usando [kokoro-onnx](https://github.com/thewh1teagle/kokoro-onnx), e estão incluídas como áudio. Jogar não exige API de voz, assinatura ou serviço pago. As vozes são sintéticas e ainda não têm sotaque nordestino específico.
 
 Este projeto é uma criação nova inspirada na proposta de ensinar sobre o sertão por meio de jogos, sem reutilizar código, arte ou áudio do Lampião Digital original.
 
@@ -54,3 +54,7 @@ O jogo envia identificadores aleatórios de navegador e sessão para um contador
 O painel `/painel` exige um link com chave secreta, validada no servidor. O código público não contém essa chave. Configure apenas seu hash SHA-256 como `ANALYTICS_ADMIN_HASH` no ambiente da hospedagem. Não publique o link privado.
 
 Para compilar a versão com contador: `npm ci` e `npm run build`. A saída fica em `dist/client` e `dist/server`. O servidor estático de Python executa apenas o jogo; o contador e o painel precisam do Worker e do banco D1. Migrações em `drizzle/`.
+
+### Referência histórica do cordel
+
+O colecionável de cordel usa a capa de **Uma Viagem ao Céu**, texto de Leandro Gomes de Barros, reproduzida no [Currículo Paulista, Caderno do Professor, p. 50](https://efape.educacao.sp.gov.br/curriculopaulista/wp-content/uploads/2022/07/3serie-2sem-Prof-SPFE-LGG-1.pdf#page=51). A fonte identifica a capa como xilogravura e indica domínio público; não identifica seu gravador. A imagem foi extraída sem redesenho e convertida para PNG. Os versos recitados são originais do jogo. Proveniência completa em `public/assets/cordel-source.json`.
